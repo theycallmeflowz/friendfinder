@@ -247,7 +247,7 @@
 		<hr>
 	    <footer class="footer">
 	    
-		  <p><a href="#">API Friends List</a> | <a href="https://github.com/theycallmeflowz/friendfinder">GitHub Repo</a></p>
+		  <p><a href="/api/friends">API Friends List</a> | <a href="https://github.com/theycallmeflowz/friendfinder">GitHub Repo</a></p>
 	     
 	    </footer>
 
@@ -352,7 +352,7 @@ $("#submit").on("submit", function(event){
             // reset form and POST new person to Friends API
             }).then(function() {
                 modal.show();
-                $(".form")[0].reset();
+                // $(".form")[0].reset();
                 $.post(apiFriendsRoute, newFriend);
             });
         // remind user to fill in all questions if error
@@ -376,7 +376,7 @@ $("#submit").on("submit", function(event){
               $("#resultsModal").modal("toggle");
     
             });
-            // alert("Thanks for filling out our survey!!!")
+            alert("Your Match is " + $("#photo").val() )
         }
         else
         {
