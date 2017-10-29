@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <title>Friends-MatchIN</title>
   <!-- Latest compiled and minified CSS & JS -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"> -->
   <link rel="stylesheet" type="text/css" href="/css/friendfinder.css">
   <script src="https://code.jquery.com/jquery.js"></script>
  
@@ -19,13 +19,13 @@
   </div> <br>
 		<h3><strong>About You</strong></h3><br>
 		<h4>Name (Required)</h4>
-		<input type="text" name="" id="name" class="form-control" required="">
+		<input type="text" name="name" id="name" class="form-control" required="">
     <br>
 		<h4>Link to Photo Image (Required)</h4>
-		<input type="text" name="" id="photo" class="form-control" required="">
+		<input type="text" name="image" id="photo" class="form-control" required="">
 
 		<hr>
-
+  <form class="form>">
 		<h3><strong>Question 1</strong></h3>
 		<h4>Your mind is always buzzing with unexplored ideas and plans.</h4>
                
@@ -174,17 +174,17 @@
 
 		<h3><strong>Question 9</strong></h3>
 		<h4>You think that everyone’s views should be respected regardless of whether they are supported by facts or not.</h4>
-                     <div class="form-group">
-                  <label for="exampleSelect1">Select an Option</label>
-                  <select class="form-control" id="q9">
-                    <option value=""></option>
+      <div class="form-group">
+          <label for="exampleSelect1">Select an Option</label>
+          <select class="form-control" id="q9">
+            <option value=""></option>
             <option value="1">1 (Strongly Disagree)</option>
             <option value="2">2</option>
             <option value="3">3</option>
             <option value="4">4</option>
             <option value="5">5 (Strongly Agree)</option>
-                  </select>
-                </div>
+          </select>
+    </div>
           
           <div class="chosen-container chosen-container-single" style="width: 155px;" title="" id="q9_chosen">
               <a class="chosen-single chosen-default">
@@ -212,46 +212,53 @@
                 </div>
           
           <div class="chosen-container chosen-container-single" style="width: 155px;" title="" id="q10_chosen"><a class="chosen-single chosen-default"><div><b></b></div></a>
-          
+        </form>     
 		<br>
 		<br>
 
 		<!-- Submit Button -->
-		<button type="submit" class="btn btn-primary btn-lg btn-block" id="submit">Submit</button>
+		<!-- <button type="submit" class="btn btn-primary btn-lg btn-block" id="submit"> -->
+      <a href="#basicModal" id="submit" class="btn btn-lg btn-success" data-toggle="modal" data-target="#basicModal">Submit</a>
+
+
+        	<!-- Modal -->
+    <div id="submit" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title"></h5>
+
+            </div>
+            <div id="resultsModal" class="modal-body">
+              <div id="matchName"></div>
+              <div id="matchImg"></div>
+            </div>
+            <div class="modal-footer">
+              
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
 
 		<hr>
 	    <footer class="footer">
 	    
-		        <p><a href="#">API Friends List</a> | <a href="https://github.com/theycallmeflowz/friendfinder">GitHub Repo</a></p>
+		  <p><a href="#">API Friends List</a> | <a href="https://github.com/theycallmeflowz/friendfinder">GitHub Repo</a></p>
 	     
 	    </footer>
 
 	</div>
+    
 
 
-  	<!-- Modal -->
-	<div id="resultsModal" class="modal fade" role="dialog">
-	  <div class="modal-dialog">
 
-	    <!-- Modal content-->
-	    <div class="modal-content">
-	      <div class="modal-header">
-	        <button type="button" class="close" data-dismiss="modal">&times;</button>
-	        <h2 class="modal-title"><strong>Best Match</strong></h2>
-	      </div>
-	      <div class="modal-body">
-	        <h2 id="matchName"></h2>
-	        <img id="matchImg" src="https://media.licdn.com/mpr/mpr/shrinknp_400_400/p/6/005/064/1bd/3435aa3.jpg" alt="">
-	      </div>
-	      <div class="modal-footer">
-	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-	      </div>
-	    </div>
-
-	  </div>
-	</div>
 
   <script type="text/javascript">
+   
     console.log("Im here");
         // // Chosen CSS
         // var config = {
@@ -267,19 +274,19 @@
     
         // Capture the form inputs 
         $("#submit").on("click", function(){
-    
           // Form validation
           function validateForm() {
           var isValid = true;
-          $('.form-control').each(function() {
-            if ( $(this).val() === '' )
+          $(".form-control").each(function() {
+            if ( $(this).val() === "" )
                 isValid = false;
           });
     
-          $('.chosen-select').each(function() {
+          $(".chosen-select").each(function() {
     
             if( $(this).val() === "")
               isValid = false
+            
           })
           return isValid;
         }
@@ -293,40 +300,67 @@
               photo: $("#photo").val(),
               scores: [$("#q1").val(), $("#q2").val(), $("#q3").val(), $("#q4").val(), $("#q5").val(), $("#q6").val(), $("#q7").val(), $("#q8").val(), $("#q9").val(), $("#q10").val(), ]
             }
-                          
+                 
+            
+          
+        // function to match user with most compatible friend
+      function makeMatch(data) {
+        var difference = 50;
+        var minName;
+        var minImage;
+        // absolute value of difference in scores will find most compatible friend
+        data.forEach(function(friend) {
+            var localDiff = Math.abs(newFriend.total - friend.total);
+            if (localDiff < difference) {
+                difference = localDiff;
+                minName = friend.name;
+                minImage = friend.image;
+            }
+        });
+        // show the most compatible friend's name and image
+        return {
+            name: minName,
+            image: minImage
+        };
+    }
 
-        // // declare and set local variables
-        // var modalTitle = $('.modal-title');
-        // var modalBody = $('.modal-body');
-        // var modal = $('#modal');
-        // var apiFriendsRoute = '/api/friends';
-        // //connect to API Friends route if user submits valid form
-        // if (validateForm()) {
-        //     $.get(apiFriendsRoute, function(data) {
-        //         var match = makeMatch(data);
-        //         // match with most compatile friend
-        //         if (match.name !== undefined) {
-        //             modalTitle.text('You have a match!');
-        //             modalBody.html('<p class="strong">You are most compatible with:</p><p>' + match.name + '</p><img src="' + match.image + '" height="100">');
-        //         // alert user that there are not enough friends in system
-        //         } else {
-        //             modalTitle.text('Too few friends');
-        //             modalBody.text('Sorry, there are too few friends to match you with.');
-        //         }
-        //     // reset form and POST new person to Friends API
-        //     }).then(function() {
-        //         modal.show();
-        //         $('.form')[0].reset();
-        //         $.post(apiFriendsRoute, newFriend);
-        //     });
-        // // remind user to fill in all questions if error
-        // } else {
-        //     modalTitle.text('Error');
-        //     modalBody.text('Please make sure all questions have been filled in.');
-        //     modal.show();
-        // }
-    
+$("#submit").on("submit", function(event){
+  event.preventDefault();
 
+  $.ajax("/")
+})
+
+
+        // declare and set local variables
+        var modalTitle = $('.modal-title');
+        var modalBody = $('.modal-body');
+        var modal = $('#modal');
+        var apiFriendsRoute = '/api/friends';
+        //connect to API Friends route if user submits valid form
+        if (validateForm()) {
+            $.get(apiFriendsRoute, function(data) {
+                var match = makeMatch(data);
+                // match with most compatible friend
+                if (match.name !== undefined) {
+                    modalTitle.text('You have a match!');
+                    modalBody.html('<p class="strong">You are most compatible with:</p><p>' + match.name + '</p><img src="' + match.image + '" height="100">');
+                // alert user that there are not enough friends in system
+                } else {
+                    modalTitle.text("Too few friends");
+                    modalBody.text("Sorry, there are too few friends to match you with.");
+                }
+            // reset form and POST new person to Friends API
+            }).then(function() {
+                modal.show();
+                $(".form")[0].reset();
+                $.post(apiFriendsRoute, newFriend);
+            });
+        // remind user to fill in all questions if error
+        } else {
+            modalTitle.text("Error");
+            modalBody.text("Please make sure all questions have been filled in.");
+            modal.show();
+        }
     
             // Grab the URL of the website
             var currentURL = window.location.origin;
@@ -336,13 +370,13 @@
     
               // Grab the result from the AJAX post so that the best match's name and photo are displayed.
               $("#matchName").text(data.name);
-              $('#matchImg').attr("src", data.photo);
+              $("#matchImg").attr("src", data.photo);
     
               // Show the modal with the best match 
-              $("#resultsModal").modal('toggle');
+              $("#resultsModal").modal("toggle");
     
             });
-            alert("Thanks for filling out our survey!!!")
+            // alert("Thanks for filling out our survey!!!")
         }
         else
         {
@@ -352,15 +386,6 @@
           return false;
         });
     
-
-
-
-
-
-
-
-
-
 
 
       </script>

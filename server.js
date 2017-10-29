@@ -22,12 +22,12 @@ app.use(bodyParser.json({ type: 'application/vnd.api+json' }));
 htmlRoutesListeners(app);
 apiRoutesListeners(app);
 
-// app.post("api/friends", function (req,res){
+app.post("api/friends", function (req,res){
 
-//     var newFriend = req.body;
-//     friendsArray.push(newFriend);
-//     res.json(newFriend);
-// });
+    var newFriend = req.body;
+    friendsArray.push(newFriend);
+    res.json(newFriend);
+});
 
 
 
